@@ -25,8 +25,12 @@
             <!--Button for user authorization-->
             <div class="text-end">
                 <button type="button" class="btn btn-light ">
-                    <a style="color: black; text-decoration: none">Войти с помощью
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'account_logout' %}" style="color: black; text-decoration: none">Выйти</a>
+                    {% else %}
+                    <a href="{% url 'account_login' %}" style="color: black; text-decoration: none">Войти с помощью
                         Google/VK</a>
+                    {% endif %}
                 </button>
             </div>
             <!--/Button for user authorization-->

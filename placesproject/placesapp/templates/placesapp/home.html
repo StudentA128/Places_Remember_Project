@@ -24,10 +24,24 @@
       <!--Button for user logout-->
       <div class="text-end">
         <button type="button" class="btn btn-light me-4">
-          <a>Выйти</a>
+          {% if user.is_authenticated %}
+          <a href="{% url 'account_logout' %}" style="color: black; text-decoration: none">Выйти</a>
+          {% else %}
+          <a href="{% url 'account_login' %}" style="color: black; text-decoration: none">Войти с помощью Google/VK</a>
+          {% endif %}
         </button>
       </div>
       <!--/Button for user logout-->
+      <!--Element with user data-->
+      <div class="text-end">
+        <div>
+          <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" width="64" height="64" class="rounded-circle">
+        </div>
+        <div align="center">
+          {{ user.first_name }}
+        </div>
+      </div>
+      <!--/Element with user data-->
     </div>
   </div>
 </header>
