@@ -8,7 +8,6 @@
         .container-fluid {
             height: 300px;
         }
-
     </style>
     <!--/Style for maps-->
     <!--Add Bootstrap-->
@@ -108,7 +107,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
@@ -117,7 +115,6 @@
     <!--Script to add value user_id field to form-->
     <script>
         document.getElementById('user').value = "{{ user.socialaccount_set.all.0.user }}";
-
     </script>
     <!--/Script to add value user_id field to form-->
 
@@ -159,10 +156,48 @@
         });
 
         map.panTo(myLatlng);
-    }
 
+        {% if places %}
+        {% for el in places %}
+
+        var tmpmap = "map{{ el.id }}";
+        var tmpmarker = "marker{{ el.id }}";
+        var tmplat = "{{ el.place_latitude }}";
+        var tmplng = "{{ el.place_longitude }}";
+        var tmplatitude = parseFloat(tmplat.replace(",","."));
+        var tmplongitude = parseFloat(tmplng.replace(",","."));
+
+        mapforlist = new google.maps.Map(document.getElementById(tmpmap), {
+            zoom: 11,
+            center: {lat: tmplatitude, lng: tmplongitude}
+        });
+
+        markerforlist = new google.maps.Marker({
+            position: {lat: tmplatitude, lng: tmplongitude},
+            map: mapforlist,
+        })
+
+        {% endfor %}
+        {% endif %}
+    }
     </script>
     <!--/Script for Google Maps API-->
+
+    <!--Displaying a list of user-saved memories-->
+    {% if places %}
+    {% for el in places %}
+    <div class="alert alert-dark mt-2">
+        <h4>{{ el.place_title }}</h4>
+        <p>{{ el.place_description }}</p>
+        <div id="map{{ el.id }}" class="container-fluid mt-2"></div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <br>
+    <br>
+    <h2 align="center">У вас нет ни одного воспоминания</h2>
+    {% endif %}
+    <!--/Displaying a list of user-saved memories-->
 
 </div>
 <!--Modal window for adding memories of a place-->
